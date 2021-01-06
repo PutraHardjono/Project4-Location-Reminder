@@ -4,6 +4,7 @@ import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 /**
  * Concrete implementation of a data source as a db.
@@ -46,6 +47,7 @@ class RemindersLocalRepository(
      */
     override suspend fun getReminder(id: String): Result<ReminderDTO> = withContext(ioDispatcher) {
         try {
+            Timber.d("getReminder($id)")
             val reminder = remindersDao.getReminderById(id)
             if (reminder != null) {
                 return@withContext Result.Success(reminder)

@@ -1,12 +1,16 @@
 package com.udacity.project4.locationreminders.reminderslist
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.udacity.project4.base.BaseViewModel
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
+import com.udacity.project4.utils.AuthenticationState
 import kotlinx.coroutines.launch
 
 class RemindersListViewModel(
@@ -15,6 +19,13 @@ class RemindersListViewModel(
 ) : BaseViewModel(app) {
     // list that holds the reminder data to be displayed on the UI
     val remindersList = MutableLiveData<List<ReminderDataItem>>()
+
+    val authenticationState = FirebaseUserLiveData().map { user ->
+        if (user != null)
+            AuthenticationState.AUTHENTICATED
+        else
+            AuthenticationState.UNAUTHENTICATED
+    }
 
     /**
      * Get all the reminders from the DataSource and add them to the remindersList to be shown on the UI,
@@ -56,5 +67,26 @@ class RemindersListViewModel(
      */
     private fun invalidateShowNoData() {
         showNoData.value = remindersList.value == null || remindersList.value!!.isEmpty()
+    }
+
+
+    @VisibleForTesting
+    fun setShowErrorMessage(errorMessage: String) {
+        showErrorMessage.value = errorMessage
+    }
+
+    @VisibleForTesting
+    fun setShowToast(message: String) {
+        showToast.value = message
+    }
+
+    @VisibleForTesting
+    fun setShowSnackBar(message: String) {
+        showSnackBar.value = message
+    }
+
+    @VisibleForTesting
+    fun setShowSnackBarInt(stringId: Int) {
+        showSnackBarInt.value = stringId
     }
 }

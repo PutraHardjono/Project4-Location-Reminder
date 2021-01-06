@@ -3,7 +3,7 @@ package com.udacity.project4.locationreminders.savereminder
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.PointOfInterest
+import com.google.android.gms.maps.model.Marker
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseViewModel
 import com.udacity.project4.base.NavigationCommand
@@ -11,24 +11,31 @@ import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSource) :
     BaseViewModel(app) {
+
     val reminderTitle = MutableLiveData<String>()
     val reminderDescription = MutableLiveData<String>()
     val reminderSelectedLocationStr = MutableLiveData<String>()
-    val selectedPOI = MutableLiveData<PointOfInterest>()
+//    val selectedPOI = MutableLiveData<PointOfInterest>()
     val latitude = MutableLiveData<Double>()
     val longitude = MutableLiveData<Double>()
+
+    init {
+        Timber.d("Init SaveReminderViewModel()")
+    }
 
     /**
      * Clear the live data objects to start fresh next time the view model gets called
      */
     fun onClear() {
+        Timber.d("onClear SaveReminderViewModel()")
         reminderTitle.value = null
         reminderDescription.value = null
         reminderSelectedLocationStr.value = null
-        selectedPOI.value = null
+//        selectedPOI.value = null
         latitude.value = null
         longitude.value = null
     }
@@ -78,5 +85,13 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
             return false
         }
         return true
+    }
+
+    fun setLocation(marker: Marker) {
+        Timber.d("setLocation markerTitle: ${marker.title}, latitude: ${marker.position.latitude}")
+
+        latitude.value = marker.position.latitude
+        longitude.value = marker.position.longitude
+        reminderSelectedLocationStr.value = marker.title
     }
 }

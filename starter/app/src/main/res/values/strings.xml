@@ -40,4 +40,11 @@
     <string name="geofence_too_many_geofences">Your app has registered too many geofences.</string>
     <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences() call.</string>
     <string name="error_adding_geofence">Error Happened, Can\'t Add Geofence</string>
+
+    <string name="error_location_setting_resolution" translatable="false">Error getting location settings resolution: %s</string>
+    <string name="error_style_parsing_failed">Style parsing failed</string>
+    <string name="error_style">Can not find style. Error: %s</string>
+    <string name="title">Title:</string>
+    <string name="description">Description:</string>
+    <string name="location">Location:</string>
 </resources>
